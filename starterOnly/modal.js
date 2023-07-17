@@ -1,5 +1,3 @@
-let isValidate = true;
-
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -27,58 +25,124 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-function setErrorMsg(message) {
-  isValidate = false;
-  console.log(message);
+function setErrorMsg(element, message) {
+  removeErrorMsg(element);
+  let errorMessage = document.createElement("p");
+  errorMessage.innerText = message;
+  errorMessage.classList.add("error-message");
+
+  if (element.nextSibling) {
+    element.parentNode.insertBefore(errorMessage, element.nextSibling);
+  } else {
+    element.insertAdjacentElement("afterend", errorMessage);
+  }
+}
+function removeErrorMsg(element) {
+  let errorMessage = element.parentNode.querySelector(".error-message");
+  if (errorMessage) {
+    errorMessage.remove();
+  }
 }
 
 // **  Form Data Validation** //
 function validate(event) {
-  // Retrieve form field values
-  let firstName = document.getElementById("first").value.trim();
-  let lastName = document.getElementById("last").value.trim();
-  let email = document.getElementById("email").value.trim();
-  let birthdate = document.getElementById("birthdate").value.trim();
-  let tournamentQuantity = document.getElementById("quantity").value.trim();
-  let location = document.querySelector('input[name="location"]:checked');
-  let conditionsChecked = document.getElementById("checkbox1").checked;
+  let isValidate = true;
+
+  event.preventDefault();
+  // Retrieve form field
+  let firstName = document.getElementById("first");
+  let lastName = document.getElementById("last");
+  let email = document.getElementById("email");
+  let birthdate = document.getElementById("birthdate");
+  let tournamentQuantity = document.getElementById("quantity");
+  let locationLabel = document.querySelector(".text-label");
+
+  let isLocationSelected = document.querySelector(
+    'input[name="location"]:checked'
+  );
+
+  let conditionsChecked = document.getElementById("checkbox1");
+  console.log(conditionsChecked.checked);
+
+  conditionsChecked.addEventListener("change", function () {
+    if (this.checked) {
+      this.setAttribute("checked", true);
+    } else {
+      this.removeAttribute("checked");
+    }
+  });
+
+  // Check if a location is selected
+
+  if (!isLocationSelected) {
+    setErrorMsg(locationLabel, "Veuillez sélectionner une localisation.");
+    isValidate = false;
+    console.log(locationLabel.querySelector("p"));
+  } else {
+    removeErrorMsg(locationLabel);
+  }
 
   // Check if the first name has at least 2 characters and is not empty
-  if (firstName.length < 2 || firstName === "") {
-    setErrorMsg("Veuillez entrer un prénom valide (au moins 2 caractères).");
+  if (firstName.value.length < 2 || firstName.value === "") {
+    setErrorMsg(
+      firstName,
+      "Veuillez entrer un prénom valide (au moins 2 caractères)."
+    );
+    isValidate = false;
+  } else {
+    removeErrorMsg(firstName);
   }
-
   // Check if the last name has at least 2 characters and is not empty
-  if (lastName.length < 2 || lastName === "") {
-    setErrorMsg("Veuillez entrer un nom valide (au moins 2 caractères).");
+  if (lastName.value.length < 2 || lastName.value === "") {
+    setErrorMsg(
+      lastName,
+      "Veuillez entrer un nom valide (au moins 2 caractères)."
+    );
+    isValidate = false;
+  } else {
+    removeErrorMsg(lastName);
   }
-
   // Ckeck if the email is empty or invalid
   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (email === "" || !emailRegex.test(email)) {
-    setErrorMsg("Veuillez entrer une adresse email valide.");
+  if (email.value === "" || !emailRegex.test(email.value)) {
+    setErrorMsg(email, "Veuillez entrer une adresse email valide.");
+    isValidate = false;
+  } else {
+    removeErrorMsg(email);
   }
 
   // Check if the birthdate is not empty and is less than today's date
-  if (birthdate === "" || new Date(birthdate) >= new Date()) {
-    setErrorMsg(
-      "Veuillez entrer une date de naissance antèrieure à la date du jour"
-    );
+  if (birthdate.value === "" || new Date(birthdate.value) >= new Date()) {
+    setErrorMsg(birthdate, "Veuillez entrer une date de naissance valide");
+    isValidate = false;
+  } else {
+    removeErrorMsg(birthdate);
   }
 
   // Check if the quantity is not empty or not numeric
-  if (tournamentQuantity === "" || isNaN(tournamentQuantity)) {
-    setErrorMsg("Veuillez entrer un nombre de concours valide.");
+  if (tournamentQuantity.value === "" || isNaN(tournamentQuantity.value)) {
+    setErrorMsg(
+      tournamentQuantity,
+      "Veuillez entrer un nombre de concours valide."
+    );
+    isValidate = false;
+  } else {
+    removeErrorMsg(tournamentQuantity);
   }
 
-  // Check if a location is selected
-  if (!location) {
-    setErrorMsg("Veuillez sélectionner une localisation.");
-  }
   // Check if the terms and conditions are checked
-  if (!conditionsChecked) {
-    setErrorMsg("Veuillez accepter les conditions générales.");
+  if (!conditionsChecked.checked) {
+    setErrorMsg(
+      conditionsChecked,
+      "Veuillez accepter les conditions générales."
+    );
+    isValidate = false;
+  } else {
+    removeErrorMsg(conditionsChecked);
   }
-  event.preventDefault(); // Prevent form submission
-  return isValidate;
+  console.log("Form is valid: ", isValidate);
+
+  if (isValidate) {
+    alert("formulaire validé");
+  }
 }
