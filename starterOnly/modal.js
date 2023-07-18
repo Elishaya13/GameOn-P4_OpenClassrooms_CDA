@@ -20,64 +20,119 @@ modalClose.addEventListener("click", closeModal);
 function launchModal() {
   modalbg.style.display = "block";
 }
-// Change the display style to "none" for close the modal
+/**
+ * Closes the modal by changing the display style to "none".
+ */
 function closeModal() {
   modalbg.style.display = "none";
 }
 
+/**
+ *  Sets an error message for an element and inserts it into the HTML.
+ *
+ * @param {HTMLElement | Element} element -  The element to set the error message for.
+ * @param {string} message - The error message to display.
+ * @returns {void}
+ */
 function setErrorMsg(element, message) {
+  // First, delete error messages if they exist
   removeErrorMsg(element);
   let errorMessage = document.createElement("p");
   errorMessage.innerText = message;
   errorMessage.classList.add("error-message");
 
-  if (element.nextSibling) {
-    element.parentNode.insertBefore(errorMessage, element.nextSibling);
+  // If the element is a checkbox, get the checkbox label and add the error messager after
+  if (element.type === "checkbox") {
+    let label = document.querySelector("label[for=checkbox1]");
+    label.insertAdjacentElement("afterend", errorMessage);
   } else {
     element.insertAdjacentElement("afterend", errorMessage);
   }
 }
+/**
+ * Removes the error message associated with an element from the HTML.
+ *
+ * @param {HTMLElement | Element} element - The element to remove the error message from.
+ * @returns {void}
+ */
 function removeErrorMsg(element) {
   let errorMessage = element.parentNode.querySelector(".error-message");
   if (errorMessage) {
     errorMessage.remove();
   }
 }
+/**
+ * Displays the validation message and "Close" button in the modal body.
+ */
+function displayValidationMessage() {
+  // Get the dimensions of the form
+  const form = document.getElementById("modal-form");
+  const formWidth = form.clientWidth;
+  const formHeight = form.clientHeight;
 
-// **  Form Data Validation** //
+  // Hide the form
+  form.style.display = "none";
+
+  // Create the validation message element
+  const validationMessage = document.createElement("p");
+  validationMessage.textContent = "Merci pour votre inscription";
+  validationMessage.style.cssText = `
+     text-align: center;
+     margin-top: 50%;
+     font-size: 36px;
+   `;
+
+  // Create the "Fermer" button element
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Fermer";
+  closeButton.classList.add("btn-close");
+  closeButton.addEventListener("click", closeModal);
+  closeButton.style.cssText = `
+     position: absolute;
+     bottom: 20px;
+     left: 50%;
+     transform: translateX(-50%);
+   `;
+
+  // Apply the form dimensions to the modal body
+  const modalBody = document.querySelector(".modal-body");
+  modalBody.innerHTML = ""; // Clear any existing content
+  modalBody.style.width = formWidth + "px";
+  modalBody.style.height = formHeight + "px";
+
+  modalBody.appendChild(validationMessage);
+  modalBody.appendChild(closeButton);
+}
+
+/**
+ * Validates the form fields and displays error messages if necessary.
+ *
+ * @param {Event} event - The event object representing the form submission.
+ * @returns {void}
+ */
 function validate(event) {
   let isValidate = true;
 
   event.preventDefault();
   // Retrieve form field
-  let firstName = document.getElementById("first");
-  let lastName = document.getElementById("last");
-  let email = document.getElementById("email");
-  let birthdate = document.getElementById("birthdate");
-  let tournamentQuantity = document.getElementById("quantity");
-  let locationLabel = document.querySelector(".text-label");
-
-  let isLocationSelected = document.querySelector(
-    'input[name="location"]:checked'
-  );
-
-  let conditionsChecked = document.getElementById("checkbox1");
-  console.log(conditionsChecked.checked);
-
-  conditionsChecked.addEventListener("change", function () {
-    if (this.checked) {
-      this.setAttribute("checked", true);
-    } else {
-      this.removeAttribute("checked");
-    }
-  });
+  const firstName = document.getElementById("first");
+  const lastName = document.getElementById("last");
+  const email = document.getElementById("email");
+  const birthdate = document.getElementById("birthdate");
+  const tournamentQuantity = document.getElementById("quantity");
+  const locationLabel = document.querySelector(".text-label");
+  const conditions = document.getElementById("checkbox1");
 
   // Check if a location is selected
-
+  // First we try to get a checked element
+  const isLocationSelected = document.querySelector(
+    'input[name="location"]:checked'
+  );
+  console.log(isLocationSelected);
+  // If element is null it means no option has been selected
   if (!isLocationSelected) {
     setErrorMsg(locationLabel, "Veuillez sélectionner une localisation.");
     isValidate = false;
-    console.log(locationLabel.querySelector("p"));
   } else {
     removeErrorMsg(locationLabel);
   }
@@ -131,18 +186,21 @@ function validate(event) {
   }
 
   // Check if the terms and conditions are checked
-  if (!conditionsChecked.checked) {
-    setErrorMsg(
-      conditionsChecked,
-      "Veuillez accepter les conditions générales."
-    );
+  if (!conditions.checked) {
+    setErrorMsg(conditions, "Veuillez accepter les conditions générales.");
     isValidate = false;
   } else {
-    removeErrorMsg(conditionsChecked);
+    removeErrorMsg(conditions);
   }
-  console.log("Form is valid: ", isValidate);
 
   if (isValidate) {
-    alert("formulaire validé");
+    // Validation succeeded, hide the form and display the validation message with the "Fermer" button
+    displayValidationMessage();
+
+    // Prevent form submission
+    event.preventDefault();
+  } else {
+    // Validation failed, prevent form submission
+    event.preventDefault();
   }
 }
