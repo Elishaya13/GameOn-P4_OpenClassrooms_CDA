@@ -196,11 +196,7 @@ function validate(event) {
   if (isValidate) {
     // Validation succeeded, hide the form and display the validation message with the "Fermer" button
     displayValidationMessage();
-
-    // Prevent form submission
-    event.preventDefault();
-  } else {
-    // Validation failed, prevent form submission
-    event.preventDefault();
   }
+  // Prevent form submission
+  event.preventDefault();
 }
