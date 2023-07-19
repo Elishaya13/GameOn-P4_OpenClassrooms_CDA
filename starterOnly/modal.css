@@ -71,9 +71,17 @@ img {
 
 .topnav .icon {
   display: none;
+  color: #fe142f
 }
 
 @media screen and (max-width: 768px) {
+  .topnav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+
   .topnav a {
     display: none;
   }
@@ -100,6 +108,11 @@ img {
     display: block;
     text-align: left;
   }
+
+  .header-logo img {
+    width: 50%;
+  }
+
 }
 
 
@@ -112,7 +125,7 @@ img {
   .topnav a.icon {
     float: right;
     display: block;
-    margin-top: -15px;
+    /* margin-top: -15px; */
   }
 }
 
@@ -130,6 +143,16 @@ main {
 
 }
 
+
+
+.footer {
+  margin: 20px;
+  padding: 10px;
+  font-family: var(--font-slab);
+}
+
+/* Modal form */
+
 .modal-btn {
   font-size: 145%;
   background: #fe142f;
@@ -146,13 +169,11 @@ main {
   background: #3876ac;
 }
 
-.footer {
-  margin: 20px;
-  padding: 10px;
-  font-family: var(--font-slab);
+.modal-validation-msg {
+  text-align: center;
+  margin-top: 50%;
+  font-size: 36px;
 }
-
-/* Modal form */
 
 .button {
   background: #fe142f;
@@ -253,12 +274,13 @@ input {
   border: 2px solid #e54858;
 }
 
-/* 
-input[data-error]::after {
-    content: attr(data-error);
-    font-size: 0.4em;
-    color: red;
+
+/* input[data-error]::after {
+  content: attr(data-error);
+  font-size: 0.4em;
+  color: red;
 } */
+
 .checkbox-label,
 .checkbox2-label {
   position: relative;
@@ -360,7 +382,7 @@ input[data-error]::after {
   transform: rotate(-45deg);
 }
 
-/* Ad btn-close */
+/* Add btn-close */
 .btn-submit,
 .btn-signup,
 .btn-close {
@@ -373,6 +395,14 @@ input[data-error]::after {
   color: #fff;
   cursor: pointer;
   border: 0;
+
+}
+
+.btn-close {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%)
 }
 
 /* custom select styles */
