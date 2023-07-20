@@ -1,11 +1,57 @@
+/**
+ * Toggles the responsive navigation menu and updates the menu icon.
+ *
+ * When called, this function toggles the "responsive" class on the navigation menu element,
+ * which controls the display of the menu on smaller screens. It also updates the menu icon
+ * based on whether the navigation menu is in responsive mode or not.
+ *
+ * @function
+ * @returns {void}
+ */
 function editNav() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
+  const topnav = document.getElementById("myTopnav");
+  topnav.classList.toggle("responsive");
+
+  const menuIcon = document.getElementById("menuIcon");
+  if (topnav.classList.contains("responsive")) {
+    menuIcon.classList.remove("fa-bars");
+    menuIcon.classList.add("fa-times");
   } else {
-    x.className = "topnav";
+    menuIcon.classList.remove("fa-times");
+    menuIcon.classList.add("fa-bars");
   }
 }
+
+/**
+ * Sets the active link in the main navigation bar based on user clicks.
+ *
+ * When a link in the main navigation bar is clicked, it becomes the active link
+ * and gets the "active" class added to it, while the previously active link loses the class.
+ *
+ * @function
+ * @returns {void}
+ */
+function setActiveLink() {
+  const links = document.querySelectorAll(".main-navbar a");
+
+  links.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      // Find the closest <a> element when the click occurs on a child element (<span>)
+      const clickedLink = e.target.closest("a");
+
+      if (clickedLink) {
+        // Remove "active" class from the previously active link, if any
+        const linkActive = document.querySelector(".main-navbar a.active");
+        if (linkActive) {
+          linkActive.classList.remove("active");
+        }
+        // Add "active" class to the clicked link
+        clickedLink.classList.add("active");
+      }
+    });
+  });
+}
+setActiveLink();
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");

@@ -45,6 +45,12 @@ img {
   float: right;
 }
 
+.main-navbar a.active {
+  text-decoration: underline solid 1px;
+  text-underline-offset: 8px;
+
+}
+
 .topnav a {
   float: left;
   display: block;
@@ -67,6 +73,7 @@ img {
   background-color: #ff0000;
   color: #ffffff;
   border-radius: 15px;
+
 }
 
 .topnav .icon {
@@ -578,6 +585,7 @@ footer {
 
   .topnav a {
     display: none;
+
   }
 
   .topnav a.icon {
@@ -589,17 +597,25 @@ footer {
     position: relative;
   }
 
+  .topnav.responsive .main-navbar {
+    min-width: 100vw;
+  }
+
   .topnav.responsive .icon {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 20px;
+    top: 20px;
+    width: 10%;
   }
 
   .topnav.responsive a {
     float: none;
     display: block;
     text-align: left;
+    width: 80%;
   }
+
+
 
 }
 
