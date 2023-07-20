@@ -12,6 +12,9 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const modalClose = document.querySelector(".close");
+const modalBody = document.querySelector(".modal-body");
+const form = document.getElementById("modal-form");
+
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 modalClose.addEventListener("click", closeModal);
@@ -24,7 +27,7 @@ function launchModal() {
   document.body.classList.add("modal-open");
 }
 /**
- * Closes the modal by changing the display style to "none" and remove the CSS class.
+ * Closes the modal by changing the display style to "none" and remove the CSS.
  */
 function closeModal() {
   modalbg.style.display = "none";
@@ -67,35 +70,58 @@ function removeErrorMsg(element) {
 }
 
 // ** Validation functions by field type **
+
+/**
+ * Validates the first name input field.
+ *
+ * @param {HTMLInputElement} name - The input field for the first name.
+ * @returns {boolean} Returns true if the first name is valid, otherwise false.
+ */
 function validateFirst(name) {
   const formDataParent = name.parentNode;
   if (name.value.length < 2 || name.value === "") {
     setErrorMsg(name, "Veuillez entrer au moins 2 caractères");
 
+    // Show the error message and add the attribute to make it visible
     formDataParent.setAttribute("data-error-visible", "true");
-    console.log(formDataParent);
     return false;
   } else {
     removeErrorMsg(name);
+    // Hide the error message and remove the attribute to make it invisible.
     formDataParent.removeAttribute("data-error-visible");
     return true;
   }
 }
 
+/**
+ * Validates the email input field.
+ *
+ * @param {HTMLInputElement} email - The input field for the email address.
+ * @returns {boolean} Returns true if the email is valid, otherwise false.
+ */
 function validateEmail(email) {
   const formDataParent = email.parentNode;
   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (email.value === "" || !emailRegex.test(email.value)) {
     setErrorMsg(email, "Veuillez entrer une adresse email valide.");
+
+    // Show the error message and add the attribute to make it visible
     formDataParent.setAttribute("data-error-visible", "true");
     return false;
   } else {
     removeErrorMsg(email);
+    // Hide the error message and remove the attribute to make it invisible.
     formDataParent.removeAttribute("data-error-visible");
     return true;
   }
 }
 
+/**
+ * Validates the birthdate input field.
+ *
+ * @param {HTMLInputElement} birthdate - The input field for the birthdate.
+ * @returns {boolean} Returns true if the birthdate is valid, otherwise false.
+ */
 function validateBirthdate(birthdate) {
   const formDataParent = birthdate.parentNode;
   if (birthdate.value === "" || new Date(birthdate.value) >= new Date()) {
@@ -108,6 +134,13 @@ function validateBirthdate(birthdate) {
     return true;
   }
 }
+
+/**
+ * Validates the quantity input field.
+ *
+ * @param {HTMLInputElement} quantityField - The input field for the quantity.
+ * @returns {boolean} Returns true if the quantity is valid, otherwise false.
+ */
 function validateQuantity(quantityField) {
   const formDataParent = quantityField.parentNode;
   if (quantityField.value === "" || isNaN(quantityField.value)) {
@@ -121,6 +154,12 @@ function validateQuantity(quantityField) {
   }
 }
 
+/**
+ * Validates the location selection.
+ *
+ * @param {HTMLLabelElement} locationLabel - The label element for the location selection.
+ * @returns {boolean} Returns true if a location is selected, otherwise false.
+ */
 function validateLocation(locationLabel) {
   const isLocationSelected = document.querySelector(
     'input[name="location"]:checked'
@@ -134,6 +173,12 @@ function validateLocation(locationLabel) {
   }
 }
 
+/**
+ * Validates the acceptance of general conditions.
+ *
+ * @param {HTMLInputElement} conditions - The input checkbox for accepting the conditions.
+ * @returns {boolean} Returns true if the conditions are accepted, otherwise false.
+ */
 function validateConditions(conditions) {
   if (!conditions.checked) {
     setErrorMsg(conditions, "Veuillez accepter les conditions générales.");
@@ -145,11 +190,34 @@ function validateConditions(conditions) {
 }
 
 /**
+ * Resets the modal form by removing applied styles,
+ * removing the close button and validation message from the modal if present,
+ * and resetting the form fields.
+ */
+function resetForm() {
+  const closeButton = document.querySelector(".btn-close");
+  const validationMessage = document.querySelector(".modal-validation-msg");
+
+  // Remove applied styles from the modal body and form.
+  modalBody.removeAttribute("style");
+  form.removeAttribute("style");
+
+  // Check if the close button and validation message exist, then remove them.
+  if (closeButton && validationMessage) {
+    closeButton.remove();
+    validationMessage.remove();
+  }
+
+  // Reset the form by clearing the input field values.
+  form.reset();
+}
+
+/**
  * Displays the validation message and "Close" button in the modal body.
  */
 function displayValidationMessage() {
   // Get the dimensions of the form
-  const form = document.getElementById("modal-form");
+
   const formWidth = form.clientWidth;
   const formHeight = form.clientHeight;
 
@@ -169,8 +237,7 @@ function displayValidationMessage() {
   closeButton.addEventListener("click", resetForm);
 
   // Apply the form dimensions to the modal body
-  const modalBody = document.querySelector(".modal-body");
-  modalBody.innerHTML = ""; // Clear any existing content
+
   modalBody.style.width = formWidth + "px";
   modalBody.style.height = formHeight + "px";
 
