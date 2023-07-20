@@ -16,15 +16,19 @@ const modalClose = document.querySelector(".close");
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 modalClose.addEventListener("click", closeModal);
 
-// launch modal form
+/**
+ * Open the modal and add a CSS class to indicate that it's open.
+ */
 function launchModal() {
   modalbg.style.display = "block";
+  document.body.classList.add("modal-open");
 }
 /**
- * Closes the modal by changing the display style to "none".
+ * Closes the modal by changing the display style to "none" and remove the CSS class.
  */
 function closeModal() {
   modalbg.style.display = "none";
+  document.body.classList.remove("modal-open");
 }
 
 /**

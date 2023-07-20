@@ -222,6 +222,11 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
+
+}
+
+.modal-open {
+  overflow: hidden;
 }
 
 label {
