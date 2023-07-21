@@ -585,7 +585,6 @@ footer {
 
   .topnav a {
     display: none;
-
   }
 
   .topnav a.icon {
@@ -599,6 +598,13 @@ footer {
 
   .topnav.responsive .main-navbar {
     min-width: 100vw;
+    background-color: #6887d6;
+    border-radius: 25px;
+    text-decoration: none;
+  }
+
+  .topnav.responsive .main-navbar .active {
+    text-decoration: none;
   }
 
   .topnav.responsive .icon {
@@ -616,7 +622,9 @@ footer {
     font-size: 1rem;
   }
 
-
+  .topnav.responsive .icon {
+    font-size: 1.5rem;
+  }
 
 }
 
@@ -674,12 +682,9 @@ footer {
     margin-top: 12px;
   }
 
-  .modal-body {
-    width: auto !important;
-
-    height: 80vh;
+  form {
+    padding-bottom: 1rem;
   }
-
 
   .content {
     position: fixed;
@@ -690,6 +695,12 @@ footer {
     width: auto;
     max-height: 90vh;
     overflow-y: auto;
+
+  }
+
+  .modal-body {
+    width: auto !important;
+    height: 80vh;
   }
 
   .btn-signup.modal-btn {
@@ -706,10 +717,16 @@ footer {
   footer {
     flex: 0.5;
     margin-bottom: 10px;
-    ;
   }
 
 }
+
+@media screen and (max-width: 375px) {
+  .hero-headline {
+    font-size: 1.8rem;
+  }
+}
+
 
 @keyframes modalopen {
   from {

@@ -263,7 +263,6 @@ function resetForm() {
  */
 function displayValidationMessage() {
   // Get the dimensions of the form
-
   const formWidth = form.clientWidth;
   const formHeight = form.clientHeight;
 
@@ -282,8 +281,13 @@ function displayValidationMessage() {
   closeButton.addEventListener("click", closeModal);
   closeButton.addEventListener("click", resetForm);
 
-  // Apply the form dimensions to the modal body
+  // If there is a validation message, activate the resetForm function on the closed icon button
+  if (validationMessage) {
+    const closeIcon = document.querySelector(".close");
+    closeIcon.addEventListener("click", resetForm);
+  }
 
+  // Apply the form dimensions to the modal body
   modalBody.style.width = formWidth + "px";
   modalBody.style.height = formHeight + "px";
 
