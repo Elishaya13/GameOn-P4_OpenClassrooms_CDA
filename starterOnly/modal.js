@@ -61,6 +61,45 @@ const modalClose = document.querySelector(".close");
 const modalBody = document.querySelector(".modal-body");
 const form = document.getElementById("modal-form");
 
+// DOM Elements, validate function and error message for form fields
+const fieldsToValidate = [
+  {
+    field: document.getElementById("first"),
+    validationFunction: validateFirst,
+    errorMsg: "Veuillez entrer un prénom valide (au moins 2 caractères).",
+  },
+  {
+    field: document.getElementById("last"),
+    validationFunction: validateFirst,
+    errorMsg: "Veuillez entrer un nom valide (au moins 2 caractères).",
+  },
+  {
+    field: document.getElementById("email"),
+    validationFunction: validateEmail,
+    errorMsg: "Veuillez entrer une adresse email valide.",
+  },
+  {
+    field: document.getElementById("birthdate"),
+    validationFunction: validateBirthdate,
+    errorMsg: "Veuillez entrer une date de naissance valide.",
+  },
+  {
+    field: document.getElementById("quantity"),
+    validationFunction: validateQuantity,
+    errorMsg: "Veuillez entrer un nombre de concours valide.",
+  },
+  {
+    field: document.querySelector(".text-label"),
+    validationFunction: validateLocation,
+    errorMsg: "Veuillez sélectionner une localisation.",
+  },
+  {
+    field: document.getElementById("checkbox1"),
+    validationFunction: validateConditions,
+    errorMsg: "Veuillez accepter les conditions générales.",
+  },
+];
+
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 modalClose.addEventListener("click", closeModal);
@@ -304,44 +343,6 @@ function displayValidationMessage() {
 function validate(event) {
   event.preventDefault();
   let isValidate = true;
-
-  const fieldsToValidate = [
-    {
-      field: document.getElementById("first"),
-      validationFunction: validateFirst,
-      errorMsg: "Veuillez entrer un prénom valide (au moins 2 caractères).",
-    },
-    {
-      field: document.getElementById("last"),
-      validationFunction: validateFirst,
-      errorMsg: "Veuillez entrer un nom valide (au moins 2 caractères).",
-    },
-    {
-      field: document.getElementById("email"),
-      validationFunction: validateEmail,
-      errorMsg: "Veuillez entrer une adresse email valide.",
-    },
-    {
-      field: document.getElementById("birthdate"),
-      validationFunction: validateBirthdate,
-      errorMsg: "Veuillez entrer une date de naissance valide.",
-    },
-    {
-      field: document.getElementById("quantity"),
-      validationFunction: validateQuantity,
-      errorMsg: "Veuillez entrer un nombre de concours valide.",
-    },
-    {
-      field: document.querySelector(".text-label"),
-      validationFunction: validateLocation,
-      errorMsg: "Veuillez sélectionner une localisation.",
-    },
-    {
-      field: document.getElementById("checkbox1"),
-      validationFunction: validateConditions,
-      errorMsg: "Veuillez accepter les conditions générales.",
-    },
-  ];
 
   for (const fieldInfo of fieldsToValidate) {
     if (!fieldInfo.validationFunction(fieldInfo.field)) {
